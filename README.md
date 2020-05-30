@@ -12,4 +12,4 @@ Futuras Features
  - Posibilidad de ver el trailer
  - Posibilidad de ver en que plataforma de streaming verla (posiblemente envio a web de tmdb con el pais especifica, por el momento Argentina)
 
-
+https://drive.google.com/file/d/1wGsD1XpLCLPAAhNl4QquAPzxFgSha1nH/view?usp=sharing
