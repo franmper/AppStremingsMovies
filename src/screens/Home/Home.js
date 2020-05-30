@@ -9,7 +9,7 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import Movies from '../Movies/Movies';
 import Series from '../Series/Series';
 
-const Home = () => {
+const Home = ({navigation}) => {
    const [movieRecomendations, setMovieRecomendations] = React.useState([]);
    const [tvRecomendations, setTvRecomendations] = React.useState([]);
 
@@ -37,7 +37,7 @@ const Home = () => {
       console.log(movieIdForRecomendation)
       await Axios.get(
          `${Config.API_URL}/${Config.API_VERSION}/movie/${movieIdForRecomendation}/recommendations?api_key=${Config.API_TOKEN}&language=es-AR&page=1`,
-      ).then(res => console.log(res));
+      ).then(res => navigation.navigate('MovieScreen', {movieRecomended: res.data.results}));
    }
 
    const handlerTvRecomendations = async () => {
@@ -47,7 +47,7 @@ const Home = () => {
       console.log(tvIdForRecomendation)
       await Axios.get(
          `${Config.API_URL}/${Config.API_VERSION}/tv/${tvIdForRecomendation}/recommendations?api_key=${Config.API_TOKEN}&language=es-AR&page=1`,
-      ).then(res => console.log(res));
+      ).then(res => navigation.navigate('SerieScreen', {serieRecomended: res.data.results}));
    }
 
    return (
@@ -66,7 +66,7 @@ const Home = () => {
                   showsHorizontalScrollIndicator={false}
                   alwaysBounceHorizontal={true}>
                   {movieRecomendations.map(movie => {
-                     return <Movies key={movie.id} movie={movie} />;
+                     return <Movies key={movie.id} movie={movie} navigation={navigation} />;
                   })}
                </ScrollView>
             </View>
@@ -79,7 +79,7 @@ const Home = () => {
                   showsHorizontalScrollIndicator={false}
                   alwaysBounceHorizontal={true}>
                   {tvRecomendations.map(tv => {
-                     return <Series key={tv.id} tv={tv} />;
+                     return <Series key={tv.id} tv={tv} navigation={navigation} />;
                   })}
                </ScrollView>
             </View>

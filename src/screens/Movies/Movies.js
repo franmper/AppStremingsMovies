@@ -1,24 +1,35 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Config from 'react-native-config';
 import * as colors from '../../configs/colors';
+import { useNavigation } from '@react-navigation/native';
+import Axios from 'axios';
 
 const Movies = ({movie}) => {
+   const navigation = useNavigation();
    const posterUrl = `${Config.API_IMAGE}${movie.poster_path}`;
 
+   const handlerMovieRecomendations = async () => {
+      await Axios.get(
+         `${Config.API_URL}/${Config.API_VERSION}/movie/${movie.id}/recommendations?api_key=${Config.API_TOKEN}&language=es-AR&page=1`,
+      ).then(res => navigation.navigate('MovieScreen', {movieRecomended: res.data.results}));
+   }
+
    return (
-      <View style={styles.container}>
-         <Image
-            style={styles.imageContainer}
-            resizeMethod={'auto'}
-            resizeMode={'contain'}
-            source={{uri: posterUrl}}
-         />
-         <View style={styles.movieContainer}>
-            <Text style={styles.movieTitle}>{movie.original_title}</Text>
-            <Text style={styles.movieVote}>{movie.vote_average}</Text>
+      <TouchableOpacity onPress={handlerMovieRecomendations}>
+         <View style={styles.container}>
+            <Image
+               style={styles.imageContainer}
+               resizeMethod={'auto'}
+               resizeMode={'contain'}
+               source={{uri: posterUrl}}
+            />
+            <View style={styles.movieContainer}>
+               <Text style={styles.movieTitle}>{movie.original_title}</Text>
+               <Text style={styles.movieVote}>{movie.vote_average}</Text>
+            </View>
          </View>
-      </View>
+      </TouchableOpacity>
    );
 };
 
